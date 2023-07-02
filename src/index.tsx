@@ -1,15 +1,51 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import "./index.css";
+import InGame from "./pages/inGame";
+import Lobby from "./pages/lobby";
+import reportWebVitals from "./reportWebVitals";
+import { WebsocketProvider, socket } from "./contexts/WebsocketContext";
+import { Toaster } from "react-hot-toast";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Lobby />,
+  },
+  {
+    path: "/lobby",
+    element: <Lobby />,
+  },
+  {
+    path: "/g/:gameId",
+    element: <InGame />,
+  },
+]);
 root.render(
   <React.StrictMode>
-    <App />
+    <Toaster
+        position="top-right"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          // Define default options
+          className: "",
+          duration: 4000,
+          style: {
+            background: "#ffffff",
+            color: "#363636",
+          },
+        }}
+      />
+    <WebsocketProvider value={socket}>
+      <RouterProvider router={router} />
+    </WebsocketProvider>
   </React.StrictMode>
 );
 
