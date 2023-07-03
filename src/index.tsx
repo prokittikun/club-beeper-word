@@ -1,13 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  BrowserRouter,
+  Link,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import "./index.css";
 import InGame from "./pages/inGame";
 import Lobby from "./pages/lobby";
 import reportWebVitals from "./reportWebVitals";
 import { WebsocketProvider, socket } from "./contexts/WebsocketContext";
 import { Toaster } from "react-hot-toast";
-
+import { AiOutlineGithub } from "react-icons/ai";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -27,6 +32,7 @@ const router = createBrowserRouter([
 ]);
 root.render(
   <React.StrictMode>
+    {/* <BrowserRouter> */}
     <Toaster
       position="top-right"
       reverseOrder={false}
@@ -45,7 +51,17 @@ root.render(
     />
     <WebsocketProvider value={socket}>
       <RouterProvider router={router} />
+      <div className="fixed flex  bottom-3 left-0 right-0 justify-center items-end">
+        <a
+          target="_blank"
+          href={"https://github.com/prokittikun/club-beeper-word"}
+          rel="noreferrer"
+        >
+          <AiOutlineGithub size="25px" color="white" />
+        </a>
+      </div>
     </WebsocketProvider>
+    {/* </BrowserRouter> */}
   </React.StrictMode>
 );
 

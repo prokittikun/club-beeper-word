@@ -86,7 +86,7 @@ function Lobby() {
   }, []);
 
   return (
-    <div className="absolute top-0 bottom-0 left-0 right-0 flex gap-5 flex-col justify-center items-center">
+    <div className="absolute top-0 bottom-0 left-0 right-0 flex gap-2 flex-col justify-center items-center">
       <span className="text-center text-3xl font-bold text-white tracking-wider">
         Welcome to game lobby
       </span>
