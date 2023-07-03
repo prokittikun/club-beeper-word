@@ -28,21 +28,21 @@ const router = createBrowserRouter([
 root.render(
   <React.StrictMode>
     <Toaster
-        position="top-right"
-        reverseOrder={false}
-        gutter={8}
-        containerClassName=""
-        containerStyle={{}}
-        toastOptions={{
-          // Define default options
-          className: "",
-          duration: 4000,
-          style: {
-            background: "#ffffff",
-            color: "#363636",
-          },
-        }}
-      />
+      position="top-right"
+      reverseOrder={false}
+      gutter={8}
+      containerClassName=""
+      containerStyle={{}}
+      toastOptions={{
+        // Define default options
+        className: "",
+        duration: 4000,
+        style: {
+          background: "#ffffff",
+          color: "#363636",
+        },
+      }}
+    />
     <WebsocketProvider value={socket}>
       <RouterProvider router={router} />
     </WebsocketProvider>
