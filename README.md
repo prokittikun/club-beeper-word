@@ -11,5 +11,5 @@
 
 - React.js (Typescipt)
 - Tailwind CSS
-- NestJs (Typescipt)
+- NestJs (Typescipt) [Repo](https://github.com/prokittikun/club-beeper-broadcast-word-api)
 - Websocket
