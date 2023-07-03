@@ -18,23 +18,26 @@ function Lobby() {
   const [isGameStarted, setIsGameStarted] = useState<
     "search" | "waiting" | "start"
   >("search");
+
   const joinRoom = async () => {
-    setIsGameStarted("search");
     if (roomId === "") {
       toast.error("Please enter room code");
-      return;
+    } else {
+      findGameStatus();
     }
-    await findGameStatus();
   };
 
   const findGameStatus = async () => {
+    console.log("findGameStatus working");
+
+    setIsGameStarted("search");
     const clientId = socket.id;
     const payload = {
       roomId: roomId,
       clientId: clientId,
     };
     const resp = await axios.post(
-      `http://localhost:3000/gameHost/gameStatus`,
+      `${process.env.REACT_APP_API_URL}/gameHost/gameStatus`,
       payload
     );
     if (resp.data.resData.gameStatus === 1) {
@@ -50,6 +53,7 @@ function Lobby() {
           return;
         } else {
           toast.error(newMessage.message);
+          socket.off("onJoin");
           return;
         }
       });
@@ -63,6 +67,7 @@ function Lobby() {
       if (newMessage.status === 200) {
         toast.success(newMessage.message);
         navigate(`/g/${newMessage.data.roomId}`);
+        socket.off("onCreateRoom");
         return;
       }
     });
@@ -82,7 +87,7 @@ function Lobby() {
 
   return (
     <div className="absolute top-0 bottom-0 left-0 right-0 flex gap-5 flex-col justify-center items-center">
-      <span className="text-3xl font-bold text-white tracking-wider">
+      <span className="text-center text-3xl font-bold text-white tracking-wider">
         Welcome to game lobby
       </span>
       <div className="flex flex-col gap-2 items-center">
@@ -93,16 +98,16 @@ function Lobby() {
           placeholder="CODE"
         />
         <button
-          className="btn bg-white px-4 py-3 w-[8rem] rounded-full hover:bg-gray-200 shake"
+          className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
           onClick={joinRoom}
         >
-          เข้าร่วมเกม
+          Join
         </button>
         <button
-          className="btn bg-white px-4 py-3 w-[8rem] rounded-full hover:bg-gray-200 shake"
+          className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
           onClick={createRoom}
         >
-          สร้างห้อง
+          Custom
         </button>
       </div>
     </div>
