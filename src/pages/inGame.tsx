@@ -4,6 +4,8 @@ import { toast } from "react-hot-toast";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import { WebsocketContext } from "../contexts/WebsocketContext";
+import { BiBody } from "react-icons/bi";
+import { GiSpy } from "react-icons/gi";
 type BasicRespPayload = {
   status: number;
   message: string;
@@ -246,51 +248,74 @@ function InGame() {
             </span>
           )
         ) : null}
-        {showModal ? (
-          <>
-            <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-              <div className="relative w-auto my-6 mx-auto lg:max-w-3xl md:max-w-xl sm:max-md">
-                {/*content*/}
-                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                  {/*header*/}
-                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                    <h3 className="text-3xl font-semibold">Your messagse</h3>
-                    <button
-                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                      onClick={() => setShowModal(false)}
-                    >
-                      <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                        ×
+      </div>
+      {showModal ? (
+        <>
+          <div
+            className="min-w-screen h-screen animated fadeIn faster  fixed  left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover"
+            id="modal-id"
+          >
+            <div className="absolute bg-black/25 opacity-80 inset-0 z-0" />
+            <div className="w-full  max-w-lg p-5 relative mx-auto my-auto rounded-xl shadow-lg  bg-white ">
+              {/*content*/}
+              <div>
+                {/*body*/}
+                <div className="text-center p-5 flex-auto justify-center">
+                  <p className=" text-black px-8 py-2 text-xl">
+                    {gameData.role === "player" ? (
+                      <span className="flex justify-center">
+                        <BiBody size={"3rem"} />
                       </span>
-                    </button>
-                  </div>
-                  {/*body*/}
-                  <div className="relative p-6 flex-auto">
-                    <p className="my-4 w-[30rem] text-black text-lg leading-relaxed">
-                      {gameData.role === "player" ? (
-                        <>{gameData.message}</>
-                      ) : gameData.role === "spy" ? (
-                        <span className="text-red-700">SPY!</span>
-                      ) : null}
-                    </p>
-                  </div>
-                  {/*footer*/}
-                  <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                    <button
-                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={() => setShowModal(false)}
-                    >
-                      Close
-                    </button>
-                  </div>
+                    ) : gameData.role === "spy" ? (
+                      <span className="flex justify-center">
+                        <GiSpy size={"3rem"} color="red"/>
+                      </span>
+                    ) : <span className="flex justify-center">
+                    <GiSpy size={"3rem"}  style={{color: 'rgb(174, 15, 39)'}}/>
+                  </span>}
+                  </p>
+                  {/* <h2 className="text-xl font-bold py-4 ">Are you sure?</h2> */}
+                  <p className=" text-black px-8 py-2 text-xl">
+                    {gameData.role === "player" ? (
+                      <span className="text-black ">{gameData.message}</span>
+                    ) : gameData.role === "spy" ? (
+                      null
+                    ) : (
+                      "loading..."
+                    )}
+                  </p>
+                </div>
+                {/*footer*/}
+                <div className="p-3  mt-1 text-center space-x-4 md:block">
+                  <button onClick={() => setShowModal(false)} className="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100">
+                    Close
+                  </button>
                 </div>
               </div>
             </div>
-            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-          </>
-        ) : null}
-      </div>
+          </div>
+
+          {/* <div className="absolute top-0 left-0 bottom-0 right-0  z-50 flex justify-center items-center">
+            <div className="flex flex-col justify-center items-center h-full w-full p-3">
+              <div className="bg-white max-w-md w-full py-16 rounded-md">
+              x
+                <div className="flex items-center justify-center leading-relaxed text-lg">
+                 
+                  {gameData.role === "player" ? (
+                    <span className="text-black ">{gameData.message}</span>
+                  ) : gameData.role === "spy" ? (
+                    <span className="text-red-700 ">SPY!</span>
+                  ) : (
+                    "loading..."
+                  )}
+ 
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div> */}
+        </>
+      ) : null}
     </>
   );
 }
