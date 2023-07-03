@@ -152,6 +152,12 @@ function InGame() {
               Hi host if players is ready, click start!
             </span>
             <button
+              className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+              onClick={startGame}
+            >
+              Start!
+            </button>
+            <button
               onClick={() => {
                 navigator.clipboard.writeText(gameId);
                 toast.success("Copied to clipboard!");
@@ -159,12 +165,6 @@ function InGame() {
               className=" flex justify-center btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
             >
               <AiOutlinePaperClip size={"20px"} />
-            </button>
-            <button
-              className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-              onClick={startGame}
-            >
-              Start!
             </button>
             <button
               className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
