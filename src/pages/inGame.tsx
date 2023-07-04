@@ -180,7 +180,7 @@ function InGame() {
                   className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
                   onClick={leaveRoom}
                 >
-                  Left the game
+                  Leave the game
                 </button>
               </>
             ) : isHost && gameStatus === "playing" ? (
@@ -233,7 +233,7 @@ function InGame() {
                   className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
                   onClick={leaveRoom}
                 >
-                  Left the game
+                  Leave the game
                 </button>
               </>
             ) : gameStatus === "playing" ? (
@@ -249,7 +249,7 @@ function InGame() {
                     className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
                     onClick={leaveRoom}
                   >
-                    Left the game
+                    Leave the game
                   </button>
                 </>
               ) : (
