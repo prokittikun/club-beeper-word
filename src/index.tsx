@@ -13,6 +13,7 @@ import reportWebVitals from "./reportWebVitals";
 import { WebsocketProvider, socket } from "./contexts/WebsocketContext";
 import { Toaster } from "react-hot-toast";
 import { AiOutlineGithub } from "react-icons/ai";
+import NotFound from "./pages/notFound";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
     path: "/g/:gameId",
     element: <InGame />,
   },
+  {
+    path: "*",
+    element: <NotFound/>,
+  }
 ]);
 root.render(
   <React.StrictMode>

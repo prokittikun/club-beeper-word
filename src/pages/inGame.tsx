@@ -46,8 +46,16 @@ function InGame() {
     socket.on("onMessage", (newMessage: onMessagePayLoad) => {
       setGameData(newMessage);
     });
+    socket.on("onHostLeave", (newMessage: BasicRespPayload) => {
+      if (newMessage.status === 200) {
+        console.log("Host leave");
+        toast.error(newMessage.message);
+        navigate("/lobby");
+      }
+    });
     socket.on("onBackToWaitingRoom", (newMessage: BasicRespPayload) => {
       if (newMessage.status === 200) {
+        toast.success(newMessage.message);
         onBackToWaitingRoom();
       }
     });
@@ -75,6 +83,7 @@ function InGame() {
         socket.off("onGameStart");
         socket.off("onMessage");
         socket.off("onBackToWaitingRoom");
+        socket.off("onHostLeave");
         clearInterval(keyInterval);
       };
     }
@@ -121,7 +130,8 @@ function InGame() {
     socket.emit("startGame", { roomId: gameId });
   };
 
-  const sendWord = () => {
+  const sendWord = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!wordData.word) {
       toast.error("Please enter a word");
       return;
@@ -138,117 +148,119 @@ function InGame() {
     setGameData({ role: "", message: "" });
     setWordData({ isSent: false, word: "" });
     setGameStatus("waiting");
+    setShowModal(false);
   };
 
-  const goToLobby = () => {
-    navigate("/lobby");
-  };
   return (
     <>
-      <div className="absolute top-0 bottom-0 left-0 right-0 flex gap-2 flex-col justify-center items-center z-0">
-        {isHost && gameId && gameStatus === "waiting" ? (
+      {gameId ? (
+        <div className="absolute top-0 bottom-0 left-0 right-0 flex gap-2 flex-col justify-center items-center z-0">
           <>
-            <span className="text-center text-3xl font-bold text-white tracking-wider">
-              Hi host if players is ready, click start!
-            </span>
-            <button
-              className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-              onClick={startGame}
-            >
-              Start!
-            </button>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(gameId);
-                toast.success("Copied to clipboard!");
-              }}
-              className=" flex justify-center btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-            >
-              <AiOutlinePaperClip size={"20px"} />
-            </button>
-            <button
-              className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-              onClick={goToLobby}
-            >
-              Left the game
-            </button>
-          </>
-        ) : isHost && gameStatus === "playing" ? (
-          <>
-            {!wordData.isSent ? (
+            {isHost && gameStatus === "waiting" ? (
               <>
                 <span className="text-center text-3xl font-bold text-white tracking-wider">
-                  Enter your word and click Send!
+                  Hi host if players is ready, click start!
                 </span>
-                <input
-                  type="text"
-                  onChange={(e) =>
-                    setWordData({ isSent: false, word: e.target.value })
-                  }
-                  className="px-4 py-3 rounded-full focus:outline-none"
-                  placeholder="WORD"
-                />
                 <button
                   className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-                  onClick={sendWord}
+                  onClick={startGame}
                 >
-                  Send!
+                  Start!
+                </button>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(gameId);
+                    toast.success("Copied to clipboard!");
+                  }}
+                  className=" flex justify-center btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+                >
+                  <AiOutlinePaperClip size={"20px"} />
+                </button>
+                <button
+                  className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+                  onClick={leaveRoom}
+                >
+                  Left the game
                 </button>
               </>
+            ) : isHost && gameStatus === "playing" ? (
+              <>
+                {!wordData.isSent ? (
+                  <>
+                    <span className="text-center text-3xl font-bold text-white tracking-wider">
+                      Enter your word and click Send!
+                    </span>
+                    <form onSubmit={(e) => sendWord(e)} className="flex flex-col justify-center items-center gap-2">
+                      <input
+                        type="text"
+                        onChange={(e) =>
+                          setWordData({ isSent: false, word: e.target.value })
+                        }
+                        className="px-4 py-3 rounded-full focus:outline-none"
+                        placeholder="WORD"
+                      />
+                      <button
+                        className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+                        type="submit"
+                      >
+                        Send!
+                      </button>
+                    </form>
+                  </>
+                ) : null}
+                <button
+                  className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+                  onClick={backToWaitingRoom}
+                >
+                  Back
+                </button>
+              </>
+            ) : gameStatus === "waiting" || gameStatus === "finished" ? (
+              <>
+                <span className="text-center text-3xl font-bold text-white tracking-wider">
+                  Wait for the host to start the game.
+                </span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(gameId);
+                    toast.success("Copied to clipboard!");
+                  }}
+                  className="flex justify-center btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+                >
+                  <AiOutlinePaperClip size={"20px"} />
+                </button>
+                <button
+                  className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+                  onClick={leaveRoom}
+                >
+                  Left the game
+                </button>
+              </>
+            ) : gameStatus === "playing" ? (
+              gameData.role ? (
+                <>
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+                  >
+                    Show the word
+                  </button>
+                  <button
+                    className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+                    onClick={leaveRoom}
+                  >
+                    Left the game
+                  </button>
+                </>
+              ) : (
+                <span className="text-center text-3xl font-bold text-white tracking-wider">
+                  Wait for the host send word!.
+                </span>
+              )
             ) : null}
-            <button
-              className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-              onClick={backToWaitingRoom}
-            >
-              Back
-            </button>
           </>
-        ) : gameStatus === "waiting" || gameStatus === "finished" ? (
-          <>
-            <span className="text-center text-3xl font-bold text-white tracking-wider">
-              Wait for the host to start the game.
-            </span>
-            {gameId ? (
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(gameId);
-                  toast.success("Copied to clipboard!");
-                }}
-                className="flex justify-center btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-              >
-                <AiOutlinePaperClip size={"20px"} />
-              </button>
-            ) : null}
-            <button
-              className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-              onClick={leaveRoom}
-            >
-              Left the game
-            </button>
-          </>
-        ) : gameStatus === "playing" ? (
-          gameData.role ? (
-            <>
-              <button
-                onClick={() => setShowModal(true)}
-                className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-              >
-                Show the word
-              </button>
-              <button
-                className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-                onClick={goToLobby}
-              >
-                Left the game
-              </button>
-            </>
-          ) : (
-            <span className="text-center text-3xl font-bold text-white tracking-wider">
-              Wait for the host send word!.
-            </span>
-          )
-        ) : null}
-      </div>
+        </div>
+      ) : null}
       {showModal ? (
         <>
           <div
@@ -268,26 +280,32 @@ function InGame() {
                       </span>
                     ) : gameData.role === "spy" ? (
                       <span className="flex justify-center">
-                        <GiSpy size={"3rem"} color="red"/>
+                        <GiSpy size={"3rem"} color="red" />
                       </span>
-                    ) : <span className="flex justify-center">
-                    <GiSpy size={"3rem"}  style={{color: 'rgb(174, 15, 39)'}}/>
-                  </span>}
+                    ) : (
+                      <span className="flex justify-center">
+                        <GiSpy
+                          size={"3rem"}
+                          style={{ color: "rgb(174, 15, 39)" }}
+                        />
+                      </span>
+                    )}
                   </p>
                   {/* <h2 className="text-xl font-bold py-4 ">Are you sure?</h2> */}
                   <p className=" text-black px-8 py-2 text-xl">
                     {gameData.role === "player" ? (
                       <span className="text-black ">{gameData.message}</span>
-                    ) : gameData.role === "spy" ? (
-                      null
-                    ) : (
+                    ) : gameData.role === "spy" ? null : (
                       "loading..."
                     )}
                   </p>
                 </div>
                 {/*footer*/}
                 <div className="p-3  mt-1 text-center space-x-4 md:block">
-                  <button onClick={() => setShowModal(false)} className="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100">
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100"
+                  >
                     Close
                   </button>
                 </div>

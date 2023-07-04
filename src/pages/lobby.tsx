@@ -19,7 +19,8 @@ function Lobby() {
     "search" | "waiting" | "start"
   >("search");
 
-  const joinRoom = async () => {
+  const joinRoom = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (roomId === "") {
       toast.error("Please enter room code");
     } else {
@@ -90,26 +91,30 @@ function Lobby() {
       <span className="text-center text-3xl font-bold text-white tracking-wider">
         Welcome to game lobby
       </span>
-      <div className="flex flex-col gap-2 items-center">
-        <input
-          type="text"
-          onChange={(e) => setRoomId(e.target.value)}
-          className="px-4 py-3 rounded-full focus:outline-none"
-          placeholder="CODE"
-        />
-        <button
-          className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-          onClick={joinRoom}
-        >
-          Join
-        </button>
-        <button
-          className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
-          onClick={createRoom}
-        >
-          Custom
-        </button>
-      </div>
+      <form onSubmit={(e)=> joinRoom(e)}>
+        <div className="flex flex-col gap-2 items-center">
+          <input
+            type="text"
+            onChange={(e) => setRoomId(e.target.value)}
+            className="px-4 py-3 rounded-full focus:outline-none"
+            placeholder="CODE"
+          />
+          <button
+            className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+            type="submit"
+          >
+            Join
+          </button>
+
+          <button
+            className="btn bg-white px-4 py-3 w-[10rem] rounded-full hover:bg-gray-200 shake"
+            onClick={createRoom}
+            type="button"
+          >
+            Custom
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
