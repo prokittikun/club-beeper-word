@@ -9,7 +9,7 @@
 
 ## 🔧 Tech Stack
 
-- React.js (Typescipt)
+- React.js (Typescript)
 - Tailwind CSS
-- NestJs (Typescipt) [Repo](https://github.com/prokittikun/club-beeper-broadcast-word-api)
+- NestJs (Typescript) [Repo](https://github.com/prokittikun/club-beeper-broadcast-word-api)
 - Websocket
