@@ -12,7 +12,8 @@ import Lobby from "./pages/lobby";
 import reportWebVitals from "./reportWebVitals";
 import { WebsocketProvider, socket } from "./contexts/WebsocketContext";
 import { Toaster } from "react-hot-toast";
-import { AiOutlineGithub } from "react-icons/ai";
+import { AiOutlineGithub, AiFillCode } from "react-icons/ai";
+import { BiSolidServer } from "react-icons/bi";
 import NotFound from "./pages/notFound";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -56,7 +57,7 @@ root.render(
     />
     <WebsocketProvider value={socket}>
       <RouterProvider router={router} />
-      <div className="fixed flex  bottom-3 left-0 right-0 justify-center items-end">
+      <div className="fixed flex gap-3 bottom-3 left-0 right-0 justify-center items-end">
         <a
           target="_blank"
           href={"https://github.com/prokittikun/club-beeper-word"}
@@ -64,6 +65,22 @@ root.render(
         >
           <AiOutlineGithub size="25px" color="white" />
         </a>
+        <a
+          target="_blank"
+          href={"https://web.facebook.com/profile.php?id=100008049784667"}
+          rel="noreferrer"
+        >
+          <AiFillCode size="25px" color="white" />
+        </a>
+        <a
+          target="_blank"
+          href={"https://web.facebook.com/jgogo01"}
+          rel="noreferrer"
+        >
+          <BiSolidServer size="25px" color="white" />
+        </a>
+        {/* <p className="text-white">Powered by <u> <a href="https://web.facebook.com/jgogo01">Natdanai</a></u></p> */}
+        
       </div>
     </WebsocketProvider>
     {/* </BrowserRouter> */}
