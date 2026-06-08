@@ -87,6 +87,7 @@ function InGame() {
         clearInterval(keyInterval);
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameId]);
   const checkHost = async () => {
     const clientId = socket.id;

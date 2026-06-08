@@ -15,7 +15,7 @@ function Lobby() {
   const navigate = useNavigate();
   const socket = useContext(WebsocketContext);
   const [roomId, setRoomId] = useState<string>("");
-  const [isGameStarted, setIsGameStarted] = useState<
+  const [, setIsGameStarted] = useState<
     "search" | "waiting" | "start"
   >("search");
 
@@ -84,6 +84,7 @@ function Lobby() {
       socket.off("onJoin");
       socket.off("onCreateRoom");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
