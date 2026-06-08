@@ -1,9 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
 import InGame from "./pages/inGame";
 import Lobby from "./pages/lobby";
@@ -14,7 +11,7 @@ import { AiOutlineGithub, AiFillCode } from "react-icons/ai";
 import { BiSolidServer } from "react-icons/bi";
 import NotFound from "./pages/notFound";
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 const router = createBrowserRouter([
   {
@@ -31,8 +28,8 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <NotFound/>,
-  }
+    element: <NotFound />,
+  },
 ]);
 root.render(
   <React.StrictMode>
@@ -70,19 +67,18 @@ root.render(
         >
           <AiFillCode size="25px" color="white" />
         </a>
-        <a
+        {/* <a
           target="_blank"
           href={"https://web.facebook.com/jgogo01"}
           rel="noreferrer"
         >
           <BiSolidServer size="25px" color="white" />
-        </a>
+        </a> */}
         {/* <p className="text-white">Powered by <u> <a href="https://web.facebook.com/jgogo01">Natdanai</a></u></p> */}
-        
       </div>
     </WebsocketProvider>
     {/* </BrowserRouter> */}
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
